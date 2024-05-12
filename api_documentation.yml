@@ -1,0 +1,229 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8081
+    description: Generated server url
+paths:
+  /v1/reservations/return:
+    post:
+      tags:
+        - reservation-controller
+      operationId: reserveBook
+      parameters:
+        - name: reservationId
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GeneralResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GeneralResponse'
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/reservations/reserve:
+    post:
+      tags:
+        - reservation-controller
+      operationId: reserveBook_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationDTO'
+        required: true
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GeneralResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GeneralResponse'
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/borrowers:
+    post:
+      tags:
+        - borrower-controller
+      operationId: registerBorrower
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BorrowerDTO'
+        required: true
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GeneralResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GeneralResponse'
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/books:
+    get:
+      tags:
+        - book-controller
+      operationId: getAllBooks
+      parameters:
+        - name: pageNumber
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GeneralResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GeneralResponse'
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    post:
+      tags:
+        - book-controller
+      operationId: registerBook
+      parameters:
+        - name: bookDTO
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/BookDTO'
+      responses:
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GeneralResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GeneralResponse'
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+components:
+  schemas:
+    GeneralResponse:
+      type: object
+      properties:
+        statusInfo:
+          type: string
+          enum:
+            - '200 OK'
+            - '201 CREATED'
+            - '400 BAD_REQUEST'
+            - '500 INTERNAL_SERVER_ERROR'
+        lastModified:
+          type: string
+          format: date-time
+        message:
+          type: string
+        data:
+          type: object
+    ReservationDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        borrowerId:
+          type: integer
+          format: int64
+        bookId:
+          type: integer
+          format: int64
+        borrowedDate:
+          type: string
+          format: date-time
+        returnedDate:
+          type: string
+          format: date-time
+        returned:
+          type: boolean
+    BorrowerDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        email:
+          type: string
+    BookDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        author:
+          type: string
+        isbn:
+          type: string
+        availableCopies:
+          type: integer
+          format: int32
