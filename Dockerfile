@@ -13,6 +13,6 @@ EXPOSE 8081
 CMD ["java", "-jar", "library-management-api.jar"]
 
 # Set environment variables
-ENV SPRING_DATASOURCE_URL jdbc:postgresql://<database-host>:<database-port>/<database-name>
+ENV SPRING_DATASOURCE_URL jdbc:mysql://<database-host>:<database-port>/<database-name>
 ENV SPRING_DATASOURCE_USERNAME <database-username>
 ENV SPRING_DATASOURCE_PASSWORD <database-password>
